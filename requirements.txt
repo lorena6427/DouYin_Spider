@@ -9,3 +9,16 @@ PyExecJS
 requests
 argparse
 websockets
+win32_setctime
+colorama
+idna
+certifi
+beautifulsoup4
+charset-normalizer
+typing_extensions
+protobuf3-to-dict
+google
+soupsieve
+protobuf
+six
+et_xmlfile
