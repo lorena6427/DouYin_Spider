@@ -14,6 +14,12 @@ from functools import partial
 
 subprocess.Popen = partial(subprocess.Popen, encoding="utf-8")
 import execjs
+from execjs import _external_runtime
+
+# 设置Node.js运行时
+node_path = subprocess.check_output(['where', 'node'], text=True).strip().split('\n')[0]
+execjs._runner_class = _external_runtime.ExternalRuntime
+execjs._runner_class.node = node_path
 
 if getattr(sys, 'frozen', None):
     basedir = sys._MEIPASS
@@ -23,16 +29,16 @@ else:
 
 try:
     node_modules = path.join(basedir, 'node_modules')
-    dy_path = path.join(basedir, 'static', 'dy_ab.js')
-    dy_js = execjs.compile(open(dy_path, 'r', encoding='utf-8').read(), cwd=node_modules)
-    sign_path = path.join(basedir, 'static', 'dy_live_sign.js')
-    sign_js = execjs.compile(open(sign_path, 'r', encoding='utf-8').read(), cwd=node_modules)
+    dy_path = path.join(basedir, '..', 'static', 'dy_ab.js')
+    dy_js = execjs.compile(open(dy_path, 'r', encoding='utf-8').read())
+    sign_path = path.join(basedir, '..', 'static', 'dy_live_sign.js')
+    sign_js = execjs.compile(open(sign_path, 'r', encoding='utf-8').read())
 except:
     node_modules = path.join(basedir, '..', 'node_modules')
     dy_path = path.join(basedir, '..', 'static', 'dy_ab.js')
-    dy_js = execjs.compile(open(dy_path, 'r', encoding='utf-8').read(), cwd=node_modules)
+    dy_js = execjs.compile(open(dy_path, 'r', encoding='utf-8').read())
     sign_path = path.join(basedir, '..', 'static', 'dy_live_sign.js')
-    sign_js = execjs.compile(open(sign_path, 'r', encoding='utf-8').read(), cwd=node_modules)
+    sign_js = execjs.compile(open(sign_path, 'r', encoding='utf-8').read())
 
 
 def trans_cookies(cookies_str):

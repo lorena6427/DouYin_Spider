@@ -58,9 +58,14 @@ def handle_work_info(data):
     collect_count = data['statistics']['collect_count']
     share_count = data['statistics']['share_count']
     video_addr = data['video']['play_addr']['url_list'][0]
-    images = data['images']
-    if not isinstance(images, list):
+    # images = data['images']
+    if data['images']:
+        # print(data['images'])
+        images = [img['download_url_list'][0] for img in data['images']]
+    else:
         images = []
+    # if not isinstance(images, list):
+    #     images = []
     create_time = data['create_time']
 
     text_extra = data['text_extra'] if 'text_extra' in data else []
@@ -149,6 +154,8 @@ def save_wrok_detail(work, path):
         f.write(f"收藏数量: {work['collect_count']}\n")
         f.write(f"分享数量: {work['share_count']}\n")
         f.write(f"视频地址url: {work['video_addr']}\n")
+        # work_images = [img['download_url_list'][0] for img in work['images']]
+        # print(work_images)
         f.write(f"图片地址url列表: {', '.join(work['images'])}\n")
         f.write(f"标签: {', '.join(work['topics'])}\n")
         f.write(f"上传时间: {timestamp_to_str(work['create_time'])}\n")
